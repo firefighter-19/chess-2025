@@ -4,8 +4,9 @@ import { newBoard } from '../../board/board';
 import { getPawnMoves } from './pawn';
 
 describe('Pawn figure', () => {
-  const board: BoardModel = newBoard();
   it('should get all possible white pawn moves', () => {
+    const board: BoardModel = newBoard();
+
     const position: Position = {
       x: 1,
       y: 1,
@@ -24,6 +25,8 @@ describe('Pawn figure', () => {
   });
 
   it('should get all possible black pawn moves', () => {
+    const board: BoardModel = newBoard();
+
     const position: Position = {
       x: 1,
       y: 7,
@@ -40,31 +43,42 @@ describe('Pawn figure', () => {
     ]);
   });
 
-  // it('should check whether pawn is possible to attack opponent', () => {
-  //   const board = newBoard();
-  //   const position: Position = {
-  //     x: 1,
-  //     y: 7,
-  //   };
-  //   board[7][1].figure = {
-  //     color: 'black',
-  //     position,
-  //     name: 'pawn',
-  //     getMoves: () => getPawnMoves(board, position, 'black'),
-  //   };
-  //   const opponentPosition: Position = {
-  //     x: 2,
-  //     y: 6,
-  //   };
-  //   board[6][2].figure = {
-  //     color: 'white',
-  //     position: opponentPosition,
-  //     name: 'pawn',
-  //     getMoves: () => getPawnMoves(board, opponentPosition, 'white'),
-  //   };
-  //   expect(board[6][2].figure.getMoves).toEqual([
-  //     { x: 1, y: 6 },
-  //     { x: 1, y: 5 },
-  //   ]);
-  // });
+  it('should check whether pawn is possible to attack opponent', () => {
+    const board: BoardModel = newBoard();
+
+    const position: Position = {
+      x: 1,
+      y: 7,
+    };
+    board[position.y][position.x].figure = {
+      color: 'black',
+      position,
+      name: 'pawn',
+    };
+    const opponentPosition: Position = {
+      x: 2,
+      y: 6,
+    };
+    board[opponentPosition.y][opponentPosition.x].figure = {
+      color: 'white',
+      position: opponentPosition,
+      name: 'pawn',
+    };
+    const opponentPositionSecond: Position = {
+      x: 0,
+      y: 6,
+    };
+    board[opponentPositionSecond.y][opponentPositionSecond.x].figure = {
+      color: 'white',
+      position: opponentPositionSecond,
+      name: 'pawn',
+    };
+    const moves = getPawnMoves(board, position, 'black');
+    expect(moves).toEqual([
+      { x: 1, y: 6 },
+      { x: 1, y: 5 },
+      { x: 2, y: 6 },
+      { x: 0, y: 6 },
+    ]);
+  });
 });
